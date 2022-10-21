@@ -1,0 +1,37 @@
+config:
+  environments:
+    local:
+      target: "http://192.168.100.11"
+      phases:
+        - duration: 60 # tiempo en segundos de la etapa
+          arrivalRate: 5 # la razón de llegada de los clientes al sitio web 5 por segundo
+          name: Warm up
+        - duration: 120
+          arrivalRate: 5
+          rampTo: 50 # se incrementa la razón de llegada de los clientes al sitio web de 5 a 50
+          name: Ramp up load
+        - duration: 600
+          arrivalRate: 50
+          name: Sustained load
+    production:
+      target: "http://192.168.100.11"
+      phases:
+        - duration: 60
+          arrivalRate: 15
+          name: Warm up
+        - duration: 120
+          arrivalRate: 15
+          rampTo: 150
+          name: Ramp up load
+        - duration: 600
+          arrivalRate: 150
+          name: Sustained load
+
+before: # lo que sucede antes de ejecutar la prueba
+  flow:
+    - log: "Current environment is set to: {{ $environment }}"
+
+scenarios:
+  - flow:
+    - get: # metodo get
+        url: "/" # http://192.168.100.11/

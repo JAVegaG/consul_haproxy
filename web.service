@@ -1,0 +1,12 @@
+[Unit]
+Description=Web App Startup process
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=/bin/bash -c '/usr/bin/node /home/vagrant/.index.js myIp myPort'
+Restart=on-failure
+TimeoutStartSec=0
+
+[Install]
+WantedBy=default.target
